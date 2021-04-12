@@ -7,34 +7,32 @@
 // @lc code=start
 class Solution {
 public:
-		int Quick_Select(vector<int>& nums, int left, int right, int index){
-			int qivotkey = randomPartition(nums, left, right);
-			if(qivotkey == index){
-				return nums[qivotkey];
-			}else{
-				return qivotkey < index ? Quick_Select(nums, qivotkey + 1, right, index) : Quick_Select(nums, left, qivotkey - 1, index);
-			}
+	int quick_select(vector<int> & nums, int left, int right){
+		int pivotkey = rand() % (right - left) + left;
+		swap(nums[pivotkey], nums[left]);
+		int pivot = nums[left];
+		while(left < right){
+			while(left < right && nums[right] <= pivot) --right;
+			nums[left] = nums[right];
+			while(left < right && nums[left] >= pivot) ++left;
+			nums[right] = nums[left];
 		}
-
-		inline int randomPartition(vector<int>& nums, int left, int right){
-			int i = rand() % (right - left + 1) + left;
-			swap(nums[i], nums[right]);
-			return partition(nums, left, right);
-		}
-
-		inline int partition(vector<int>& nums, int left, int right){
-			int X = nums[right], i = left - 1;
-			for(int j = left; j < right; ++j){
-				if(nums[j] <= X){
-					swap(nums[++i], nums[j]);
+		nums[left] = pivot;
+		return left;
+	}
+		int findKthLargest(vector<int>& nums, int k) {
+			int left = 0, right = nums.size() - 1, mid = 0, target = k - 1; // target 指第k大的数的索引
+			while(left < right){
+				mid = quick_select(nums, left, right);
+				if(mid == target){
+					return nums[mid];
+				} else if (mid < target){
+					left = mid + 1;
+				} else {
+					right = mid - 1;
 				}
 			}
-			swap(nums[i+1], nums[right]);
-			return i+1;
-		}
-		int findKthLargest(vector<int>& nums, int k) {
-			srand(time(0));
-			return Quick_Select(nums, 0, nums.size()-1, nums.size()-k);
+			return nums[left];
 		}
 };
 // @lc code=end
