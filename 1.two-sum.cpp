@@ -60,18 +60,21 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-			vector<int> answer;
-			int i, j;
-			for(i = 0; i< nums.size() - 1; i++){
-				for(j = i + 1; j < nums.size(); j++){
-					int diff = target - nums[j];
-					if(nums[i] == diff){
-						answer.push_back(i);
-						answer.push_back(j);
-					}
+			vector<int> ans;
+			unordered_map<int, int> hash;
+
+			for(int i = 0; i < nums.size(); ++i){
+				auto pos = hash.find(target - nums[i]);
+
+				if(pos == hash.end()){
+					hash[nums[i]] = i;
+				} else {
+					ans.push_back(pos->second);
+					ans.push_back(i);
+					break;
 				}
 			}
-			return answer;
+			return ans;
     }
 };
 // @lc code=end
