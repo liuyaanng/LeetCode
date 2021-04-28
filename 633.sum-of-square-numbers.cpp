@@ -8,17 +8,17 @@
 class Solution {
 public:
     bool judgeSquareSum(int c) {
-			if(c<=2){
-				return true;
-			}
-			long a = 0, b = sqrt(c);
-			while(a<=b){
-				if(b*b == c - a*a){
+			if(c <= 2) return true;
+
+			int begin = 0, end = sqrt(c);
+
+			while(begin <= end){
+				if(end * end == c - begin * begin ){
 					return true;
-				}else if(b*b < c - a*a){
-					++a;
-				}else{
-					--b;
+				} else if(end * end < c - begin * begin){
+					++begin;
+				} else {
+					--end;
 				}
 			}
 			return false;
